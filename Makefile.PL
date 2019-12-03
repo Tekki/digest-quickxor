@@ -3,17 +3,14 @@ use utf8;
 use ExtUtils::MakeMaker;
 my %WriteMakefileArgs = (
   NAME           => 'Digest::QuickXor',
-  AUTHOR         => 'Tekki <tekki@tekki.ch>',
+  AUTHOR         => 'Rolf Stöckli <tekki@cpan.org>',
   LICENSE        => 'artistic_2',
   ABSTRACT_FROM  => 'lib/Digest/QuickXor.pm',
   VERSION_FROM   => 'lib/Digest/QuickXor.pm',
   EXE_FILES      => [qw()],
-  # LIBS           => [''],
-  # DEFINE         => '',
-  # INC            => '',
   OBJECT         => 'QuickXor.o qxhash.o',
   BUILD_REQUIRES => {},
-  TEST_REQUIRES => {
+  TEST_REQUIRES  => {
     'Test::More' => '0.88'
   },
   PREREQ_PM => {
@@ -23,12 +20,12 @@ my %WriteMakefileArgs = (
     'dynamic_config' => 0,
     'meta-spec'      => {version => 2},
     'resources'      => {
-      bugtracker => {web => 'https://github.com/tekki/digest-quickxor/issues'},
-      homepage   => 'https://github.com/tekki/digest-quickxor',
+      bugtracker => {web => 'https://github.com/Tekki/digest-quickxor/issues'},
+      homepage   => 'https://github.com/Tekki/digest-quickxor',
       repository => {
         type => 'git',
-        url  => 'https://github.com/tekki/digest-quickxor',
-        web  => 'https://github.com/tekki/digest-quickxor',
+        url  => 'https://github.com/Tekki/digest-quickxor.git',
+        web  => 'https://github.com/Tekki/digest-quickxor',
       },
     },
     'x_contributors' => [],
