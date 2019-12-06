@@ -1,6 +1,6 @@
 use strict;
 use warnings;
-## no critic StringyEval
+## no critic (StringyEval)
 
 use Test::More;
 use File::Find;

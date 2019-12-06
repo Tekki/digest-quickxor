@@ -2,8 +2,6 @@ use strict;
 use warnings;
 use utf8;
 use v5.24;
-use feature 'signatures';
-no warnings 'experimental::signatures';
 
 use Test::More;
 

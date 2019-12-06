@@ -2,11 +2,11 @@ use strict;
 use warnings;
 use utf8;
 use v5.24;
-use feature 'signatures';
-no warnings 'experimental::signatures';
 
 use FindBin;
 use Test::More;
+
+use IO::File;
 
 my $package;
 
@@ -30,11 +30,16 @@ for my $file (sort keys %hashes) {
   my $fh;
   my $path = "$FindBin::Bin/resources/$file";
 
-  is $object->addfile($path)->b64digest, $hashes{$file}, "Hash for $file (path)";
-
-  ok open($fh, '<', $path), "Handle for $file";
-  is $object->addfile($fh)->b64digest, $hashes{$file}, "Hash for $file (handle)";
+  ok open($fh, '<', $path), "Glob for $file";
+  is $object->addfile($fh)->b64digest, $hashes{$file}, "Hash for $file glob";
   close $fh;
+
+  ok $fh= IO::File->new($path, '<'), "Handle for $file";
+  is $object->addfile($fh)->b64digest, $hashes{$file}, "Hash for $file handle";
+  $fh->close;
+
+  eval { $object->addfile($path) };
+  like $@, qr/Not a file handle!/, 'Correct error for path';
 }
 
 done_testing();

@@ -9,18 +9,29 @@ use feature 'signatures';
 no warnings 'experimental::signatures';
 
 use Carp 'croak';
+use Exporter 'import';
+our @EXPORT_OK = qw|quickxorhash|;
 
 our $VERSION = '0.02';
 
 __PACKAGE__->bootstrap($VERSION);
 
-sub new ($class) {
+# functions
 
+sub quickxorhash (@data) {
+  return __PACKAGE__->new->add(@data)->b64digest;
+}
+
+# constructor
+
+sub new ($class) {
   my $qx   = Digest::QuickXor::HashPtr->new();
   my $self = {_qx => $qx};
 
   return bless $self, $class;
 }
+
+# methods
 
 sub add ($self, @data) {
   for (@data) {
@@ -30,13 +41,8 @@ sub add ($self, @data) {
   return $self;
 }
 
-sub addfile ($self, $file) {
-  my $fh;
-  if (ref($file) eq 'GLOB') {
-    $fh = $file;
-  } else {
-    CORE::open $fh, '<', $file or croak qq|Can't open file "$file": $!|;
-  }
+sub addfile ($self, $fh) {
+  croak 'Not a file handle!' unless $fh->can('sysread');
 
   my $ret = '';
   while ($ret = $fh->sysread(my $buffer, 131072, 0)) {
@@ -77,12 +83,17 @@ Digest::QuickXor - The QuickXorHash
     $qx->add(@data);
     $qx->b64digest;
 
-    $qx->addfile($file);
+    $qx->addfile($filehandle);
     $qx->b64digest;
 
     $qx->add($wrong_data);
     $qx->reset;
     $qx->add($correct_data);
+
+    # use as function
+    use Digest::QuickXor 'quickxorhash';
+
+    my $hash = quickxorhash(@data);
 
 =head1 DESCRIPTION
 
@@ -91,6 +102,18 @@ L<Digest::QuickXor> implements the QuickXorHash.
 The QuickXorHash is the digest used by Microsoft on Office 365 OneDrive for Business and Sharepoint.
 It was published by Microsoft in 2016 in form of a C# script. The explanation describes it as a
 "quick, simple non-cryptographic hash algorithm that works by XORing the bytes in a circular-shifting fashion".
+
+=head2 FUNCTIONS
+
+None of the functions is exported by default.
+
+=head2 quickxorhash
+
+    use Digest::QuickXor 'quickxorhash';
+
+    my $hash = quickxorhash(@data);
+
+Returns the digest for the provided data.
 
 =head1 CONSTRUCTOR
 
@@ -109,10 +132,9 @@ Adds new blocks of data.
 
 =head2 addfile
 
-    $qx = $qx->addfile($path);
     $qx = $qx->addfile($filehandle);
 
-Adds data from a file path or from a file handle.
+Adds data from a file handle.
 
 =head2 b64digest
 
