@@ -11,12 +11,17 @@ Digest::QuickXor - The QuickXorHash
     $qx->add(@data);
     $qx->b64digest;
 
-    $qx->addfile($file);
+    $qx->addfile($filehandle);
     $qx->b64digest;
 
     $qx->add($wrong_data);
     $qx->reset;
     $qx->add($correct_data);
+
+    # use as function
+    use Digest::QuickXor 'quickxorhash';
+
+    my $hash = quickxorhash(@data);
 
 # DESCRIPTION
 
@@ -25,6 +30,18 @@ Digest::QuickXor - The QuickXorHash
 The QuickXorHash is the digest used by Microsoft on Office 365 OneDrive for Business and Sharepoint.
 It was published by Microsoft in 2016 in form of a C# script. The explanation describes it as a
 "quick, simple non-cryptographic hash algorithm that works by XORing the bytes in a circular-shifting fashion".
+
+## FUNCTIONS
+
+None of the functions is exported by default.
+
+## quickxorhash
+
+    use Digest::QuickXor 'quickxorhash';
+
+    my $hash = quickxorhash(@data);
+
+Returns the digest for the provided data.
 
 # CONSTRUCTOR
 
@@ -43,10 +60,9 @@ Adds new blocks of data.
 
 ## addfile
 
-    $qx = $qx->addfile($path);
     $qx = $qx->addfile($filehandle);
 
-Adds data from a file path or from a file handle.
+Adds data from a file handle.
 
 ## b64digest
 

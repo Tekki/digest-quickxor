@@ -12,7 +12,7 @@ use Carp 'croak';
 use Exporter 'import';
 our @EXPORT_OK = qw|quickxorhash|;
 
-our $VERSION = '0.02';
+our $VERSION = '0.03';
 
 __PACKAGE__->bootstrap($VERSION);
 

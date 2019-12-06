@@ -9,14 +9,17 @@ my %WriteMakefileArgs = (
   VERSION_FROM   => 'lib/Digest/QuickXor.pm',
   EXE_FILES      => [qw()],
   OBJECT         => 'QuickXor.o qxhash.o',
-  BUILD_REQUIRES => {},
+  BUILD_REQUIRES => {}
+,
   TEST_REQUIRES  => {
-    'Test::More' => '0.88'
-  },
-  PREREQ_PM => {
-    'perl' => 'v5.24.0'
-  },
-  META_MERGE => {
+  'Test::More' => '0.88'
+}
+,
+  PREREQ_PM      => {
+  'perl' => 'v5.24.0'
+}
+,
+  META_MERGE     => {
     'dynamic_config' => 0,
     'meta-spec'      => {version => 2},
     'resources'      => {
@@ -28,7 +31,8 @@ my %WriteMakefileArgs = (
         web  => 'https://github.com/Tekki/digest-quickxor',
       },
     },
-    'x_contributors' => [],
+    'x_contributors' => []
+,
   },
   test => {TESTS => (-e 'META.yml' ? 't/*.t' : 't/*.t xt/*.t')},
 );
